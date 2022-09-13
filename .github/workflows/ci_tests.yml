@@ -8,7 +8,7 @@ on:
       - '*'
 jobs:
   run_tests:
-    run-on: [ubuntu-latest]
+    runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@master
       - uses: actions/setuo-python@v1
