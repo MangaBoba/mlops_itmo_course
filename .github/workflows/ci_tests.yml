@@ -1,0 +1,21 @@
+name: Run test on push
+
+on:
+  push:
+    tags:
+      - '!refs/tags/*'
+    branches:
+      - '*'
+jobs:
+  run_tests:
+    run-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setuo-python@v1
+        with:
+          python-version: '3.9.13'
+          architecture: 'x64'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
