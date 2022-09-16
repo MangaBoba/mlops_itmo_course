@@ -9,7 +9,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@main
-      - uses: actions/setuo-python@v1
+      - uses: actions/setup-python@v1
         with:
           python-version: '3.9.13'
           architecture: 'x64'
@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Docker.io login
         run: echo $PASSWORD | docker login -u $LOGIN--password-stdin
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Image build
         run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
       - name: Push image
