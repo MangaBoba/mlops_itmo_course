@@ -6,7 +6,7 @@ on:
 
 jobs:
   run_tests:
-    run-on: [ ubuntu-latest ]
+    run-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@main
       - uses: actions/setuo-python@v1
@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Docker.io login
         run: echo $PASSWORD | docker login -u $LOGIN--password-stdin
-      - users: actions/checkout@master
+      - uses: actions/checkout@master
       - name: Image build
         run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
       - name: Push image
