@@ -4,8 +4,8 @@ from pathlib import Path
 from clearml_pipeline.src.training import test as main_actions
 
 def main():
-    task:Task = Task.init(project_name='CoffeBeans',
-                     task_name="testing")
+    task:Task = Task.init(project_name='CoffeeBeans',
+                     task_name="testing", task_type=TaskTypes.data_processing)
 
     clearml_params = {
         "dataset_id":"dbd9d8ebae474de9a84bb829e60024af"

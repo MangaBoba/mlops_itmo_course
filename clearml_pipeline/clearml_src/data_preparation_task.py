@@ -5,8 +5,8 @@ from clearml_pipeline.src.data_preparation import main_actions
 
 
 def main():
-    task:Task = Task.init(project_name='CoffeBeans',
-                     task_name="data_preparation")
+    task:Task = Task.init(project_name='CoffeeBeans',
+                     task_name="data preparation", task_type=TaskTypes.data_processing)
     clearml_params = {
         "dataset_id":"dbd9d8ebae474de9a84bb829e60024af"
     }
