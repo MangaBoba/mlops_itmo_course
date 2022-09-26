@@ -25,24 +25,24 @@ pipe.add_step(
         'General/dataset_id': "dbd9d8ebae474de9a84bb829e60024af"},
 )
 
-# pipe.add_step(
-#     name='training_step',
-#     parents=['preparation_data', ],
-#     base_task_project='CoffeBeans/experement_2',
-#     base_task_name='training',
-#     parameter_override={
-#         'General/dataset_id': "${preparation_data.parameters.dataset_id}"},
-# )
-# pipe.add_step(
-#     name='testing_step',
-#     parents=['training_step', ],
-#     base_task_project='CoffeBeans',
-#     base_task_name='testing',
-#     parameter_override={
-#         'General/dataset_id': "${preparation_data.parameters.dataset_id}"},
-# )
+pipe.add_step(
+    name='training_step',
+    parents=['preparation_data'],
+    base_task_project='CoffeeBeans',
+    base_task_name='training',
+    parameter_override={
+        'General/dataset_id': "${preparation_data.parameters.General/output_dataset_id}"},
+)
 
+pipe.add_step(
+    name='testing_step',
+    parents=['training_step'],
+    base_task_project='CoffeeBeans',
+    base_task_name='testing',
+    parameter_override={
+        'General/dataset_id': "${preparation_data.parameters.General/output_dataset_id}"},
+)
 
-pipe.start_locally()
+pipe.start_locally(run_pipeline_steps_locally=True)
 
 print('done')

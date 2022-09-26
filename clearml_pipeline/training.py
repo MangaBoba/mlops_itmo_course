@@ -1,14 +1,12 @@
-import argparse
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-from torchvision import datasets, transforms, models
+from torchvision import transforms, models
 from torch.optim.lr_scheduler import StepLR
 import pandas as pd
 from PIL import Image
-from clearml_pipeline.config import AppConfig
+from config import AppConfig
 from pathlib import Path
+
 from torch.utils.tensorboard import SummaryWriter
 
 transform=transforms.Compose([
@@ -106,7 +104,7 @@ def validate(model, device, val_loader, epoch, writer):
 def test(model, config: AppConfig):
     use_cuda = not config.no_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
-
+    model.to(device)
     writer = SummaryWriter("runs/CoffeBeans")
     test_kwconfig = {'batch_size': config.test_batch_size}
     if use_cuda:
@@ -117,6 +115,7 @@ def test(model, config: AppConfig):
 
     running_loss = 0
     running_corrects = 0
+
     model.eval()
 
     dataset0 = BeansDataset(stage='all',

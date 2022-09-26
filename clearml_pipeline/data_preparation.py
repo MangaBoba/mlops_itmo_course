@@ -1,4 +1,4 @@
-from clearml_pipeline.config import AppConfig
+from config import AppConfig
 from PIL import Image
 from tqdm import tqdm
 import pandas as pd

@@ -1,7 +1,7 @@
 from pathlib import Path
 from clearml import Task, TaskTypes, Dataset
-from clearml_pipeline.config import AppConfig
-from clearml_pipeline.src.data_preparation import main_actions
+from data_preparation import main_actions
+from config import AppConfig
 
 
 def main():
@@ -10,7 +10,9 @@ def main():
     clearml_params = {
         "dataset_id":"dbd9d8ebae474de9a84bb829e60024af"
     }
+
     task.connect(clearml_params)
+
     dataset_path = Dataset.get(**clearml_params).get_local_copy()
     config: AppConfig = AppConfig.parse_raw()
     config.dataset_path = Path(dataset_path)

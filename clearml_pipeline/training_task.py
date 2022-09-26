@@ -1,8 +1,7 @@
-from clearml_pipeline.config import AppConfig
 from clearml import Task, TaskTypes, Dataset
 from pathlib import Path
-from clearml_pipeline.src.training import main_actions
-
+from training import main_actions
+from config import AppConfig
 def main():
     task:Task = Task.init(project_name='CoffeeBeans',
                      task_name="training", task_type=TaskTypes.training)
@@ -15,7 +14,9 @@ def main():
     config: AppConfig = AppConfig.parse_raw()
     config.dataset_path = Path(dataset_path)
     print(config.dataset_path)
-    main_actions(config=config)
+    model = main_actions(config=config)
+    return model
+    # task.upload_artifact('beans_classifier', artifact_object=model, auto_pickle = True)
 
 if __name__ == "__main__":
     main()
