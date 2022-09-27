@@ -4,5 +4,5 @@
 - [x] 3. CI проверка кода линтером flake8, пример простейшего теста. [main branch](https://github.com/MangaBoba/mlops_itmo_course/tree/clearml/.github/workflows)
 - [x] 4. Добавление [датасета](https://www.kaggle.com/datasets/gpiosenka/coffee-bean-dataset-resized-224-x-224) в ClearML.
 - [x] 5. Построение логируемого в ClearML пайплайна обучения моделей. [clearml branch] (https://github.com/MangaBoba/mlops_itmo_course/tree/clearml)
-- [ ] 6. Инференс модели на triton.
+- [x] 6. Инференс модели на triton.
 - [ ] 7. Триггеры и мониторинг.
