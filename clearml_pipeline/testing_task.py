@@ -1,16 +1,16 @@
-from clearml import Task, TaskTypes, Dataset
 from pathlib import Path
-from training import test as main_actions
-from config import AppConfig
-from torchvision import models
-import torch
-def main():
-    task:Task = Task.init(project_name='CoffeeBeans',
-                     task_name="testing", task_type=TaskTypes.testing)
 
-    clearml_params = {
-        "dataset_id":"dbd9d8ebae474de9a84bb829e60024af"
-    }
+from clearml import Dataset, Task, TaskTypes
+from config import AppConfig
+from training import test as main_actions
+
+
+def main():
+    task: Task = Task.init(
+        project_name="CoffeeBeans", task_name="testing", task_type=TaskTypes.testing
+    )
+
+    clearml_params = {"dataset_id": "dbd9d8ebae474de9a84bb829e60024af"}
     task.connect(clearml_params)
     dataset_path = Dataset.get(clearml_params["dataset_id"]).get_local_copy()
     config: AppConfig = AppConfig.parse_raw()
@@ -25,10 +25,11 @@ def main():
     #     print(model_pt)
     # except:
     #     pass
-    prev_task = Task.get_task(project_name="CoffeeBeans", task_id='training')
-    model_snap = prev_task.models['output'][-1]
+    prev_task = Task.get_task(project_name="CoffeeBeans", task_id="training")
+    model_snap = prev_task.models["output"][-1]
     model = model_snap.get_local_copy()
     main_actions(model, config=config)
+
 
 if __name__ == "__main__":
     main()

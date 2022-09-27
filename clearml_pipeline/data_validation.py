@@ -1,14 +1,13 @@
+import pandas as pd
 from config import AppConfig
 from PIL import Image
 from tqdm import tqdm
-from pathlib import Path
-import pandas as pd
 
 
 def main_actions(config: AppConfig):
     df_info = pd.read_csv(config.dataset_path / "Coffee Bean.csv")
 
-    for image_path in tqdm(df_info.loc[::]['filepaths'], desc="Images validation"):
+    for image_path in tqdm(df_info.loc[::]["filepaths"], desc="Images validation"):
         Image.open(config.dataset_path / image_path)
 
 

@@ -1,7 +1,9 @@
+from pathlib import Path
+
 import pandas as pd
 import torch
 import torch.optim as optim
-from config import AppConfig
+from clearml_pipeline.config import AppConfig
 from PIL import Image
 from torch.optim.lr_scheduler import StepLR
 from torch.utils.tensorboard import SummaryWriter
@@ -16,7 +18,7 @@ transform = transforms.Compose(
 
 
 class BeansDataset(torch.utils.data.Dataset):
-    def __init__(self, stage, root_dir, csv_samples_info=None, transform=None):
+    def __init__(self, stage, csv_samples_info=None, transform=None):
 
         df = pd.read_csv(csv_samples_info)
         if stage == "train":
@@ -26,7 +28,7 @@ class BeansDataset(torch.utils.data.Dataset):
         else:
             self.landmarks_frame = df
 
-        self.root_dir = root_dir
+        self.root_dir = "clearml_dataset/data/"
         self.transform = transform
 
     def __len__(self):
@@ -36,7 +38,10 @@ class BeansDataset(torch.utils.data.Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        img_pth = str(self.root_dir / self.landmarks_frame.iloc[idx]["filepaths"])
+        img_pth = str(
+            Path(__file__).parent
+            / ("clearml_dataset/data/" + self.landmarks_frame.iloc[idx]["filepaths"])
+        )
         image = Image.open(img_pth).convert("RGB")
         class_id = self.landmarks_frame.iloc[idx]["class index"]
         # class_name = self.landmarks_frame.iloc[idx]["labels"]
@@ -98,7 +103,7 @@ def validate(model, device, val_loader, epoch, writer):
 def test(model, config: AppConfig):
     use_cuda = not config.no_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
-    model.to(device)
+
     writer = SummaryWriter("runs/CoffeBeans")
     test_kwconfig = {"batch_size": config.test_batch_size}
     if use_cuda:
@@ -107,13 +112,13 @@ def test(model, config: AppConfig):
 
     running_loss = 0
     running_corrects = 0
-
     model.eval()
 
     dataset0 = BeansDataset(
         stage="all",
-        root_dir=config.dataset_output_path,
-        csv_samples_info=str(config.dataset_output_path / "Coffee Bean.csv"),
+        csv_samples_info=str(
+            Path(__file__).parent / "./clearml_dataset/data/Coffee Bean.csv"
+        ),
         transform=transform,
     )
     test_loader = torch.utils.data.DataLoader(dataset0, **test_kwconfig)
@@ -147,13 +152,6 @@ def main_actions(config: AppConfig):
 
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    # dataset0 = BeansDataset(
-    #     stage="all",
-    #     root_dir=config.dataset_output_path,
-    #     csv_samples_info=str(config.dataset_output_path / "Coffee Bean.csv"),
-    #     transform=transform,
-    # )
-
     train_kwconfig = {"batch_size": config.batch_size}
     val_kwconfig = {"batch_size": config.test_batch_size}
     if use_cuda:
@@ -163,14 +161,16 @@ def main_actions(config: AppConfig):
 
     dataset1 = BeansDataset(
         stage="train",
-        root_dir=config.dataset_output_path,
-        csv_samples_info=str(config.dataset_output_path / "Coffee Bean.csv"),
+        csv_samples_info=str(
+            Path(__file__).parent / "./clearml_dataset/data/Coffee Bean.csv"
+        ),
         transform=transform,
     )
     dataset2 = BeansDataset(
         stage="val",
-        root_dir=config.dataset_output_path,
-        csv_samples_info=str(config.dataset_output_path / "Coffee Bean.csv"),
+        csv_samples_info=str(
+            Path(__file__).parent / "./clearml_dataset/data/Coffee Bean.csv"
+        ),
         transform=transform,
     )
     train_loader = torch.utils.data.DataLoader(dataset1, **train_kwconfig)

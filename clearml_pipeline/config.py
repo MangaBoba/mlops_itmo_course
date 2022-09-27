@@ -1,5 +1,6 @@
-from typing import Union
 from pathlib import Path
+from typing import Union
+
 from pydantic_yaml import YamlModel
 
 
@@ -21,8 +22,13 @@ class AppConfig(YamlModel):
     val_loss_threshold: float
 
     @classmethod
-    def parse_raw(cls, filename: Union[str, Path] = str(Path(__file__).parent / "./config.yaml"), *args, **kwargs):
-        with open(filename, 'r') as f:
+    def parse_raw(
+        cls,
+        filename: Union[str, Path] = str(Path(__file__).parent / "./config.yaml"),
+        *args,
+        **kwargs
+    ):
+        with open(filename, "r") as f:
             data = f.read()
         return super().parse_raw(data, *args, **kwargs)
 
