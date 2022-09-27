@@ -1,17 +1,12 @@
 import time
 
-import matplotlib.pyplot as plt
 import numpy as np
 import tritonclient.grpc as grpcclient
 from PIL import Image
 from torchvision import transforms
 
 
-def plot(src, cmap=None, title=None, size=(10, 10)):
-    plt.rcParams["figure.figsize"] = size
-
-
-def batch_preprocessing(img, transform) -> np.ndarray:
+def batch_preprocessing(img: Image, transform: transforms.Compose) -> np.ndarray:
 
     img = transform(img).unsqueeze(0).numpy()
     return img
