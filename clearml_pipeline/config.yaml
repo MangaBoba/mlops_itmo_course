@@ -1,0 +1,19 @@
+---
+# data
+dataset_path: ./dataset/base
+dataset_id: dbd9d8ebae474de9a84bb829e60024af
+dataset_output_path: ./dataset/prepared
+
+# model training
+batch_size: 8
+test_batch_size: 8
+epochs: 6
+lr: 0.001
+no_cuda: False
+gamma: 0.9
+seed: 0
+
+
+# validation
+val_acc_threshold: 0.90
+val_loss_threshold: 0.2
